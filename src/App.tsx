@@ -1,12 +1,28 @@
+import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
 import './App.css'
-import Navbar from './components/Navbar'
-
-function App() {
-
+import { SignInButton, SignUpButton, useAuth } from '@clerk/clerk-react';
+import Home from './components/Home';
+import Layout from './components/Layout';
+const App: React.FC = () => {
+  const { isSignedIn } = useAuth();
+  console.log(isSignedIn, "isSignedIn");
   return (
-    <div className='relative'>
-      <Navbar />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/sign-in" element={<SignInButton />} />
+        <Route path="/sign-up" element={<SignUpButton />} />
+        <Route
+          path="/"
+          element={
+            // <ProtectedRoute>
+               <Layout>
+                <Home />
+               </Layout>
+            // </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
   )
 }
 

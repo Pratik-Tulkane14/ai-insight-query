@@ -7,6 +7,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+body{
+  position: relative;
+}
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
