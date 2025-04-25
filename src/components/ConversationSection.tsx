@@ -1,4 +1,3 @@
-import React from 'react'
 import MarkdownUi from './MarkdownUi';
 const data = `React is a **declarative, efficient, and flexible JavaScript library for building user interfaces (UIs).**  It's maintained by Facebook and a large community of individual developers and companies.
 
