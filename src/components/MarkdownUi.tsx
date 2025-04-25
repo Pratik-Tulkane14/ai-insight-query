@@ -28,13 +28,7 @@ const MarkdownUi: React.FC<MarkdownUiProps> = ({ text }) => {
                     ul: ({ children }) => <ul className="list-disc ml-5">{children}</ul>,
                     ol: ({ children }) => <ol className="list-decimal ml-5">{children}</ol>,
                     li: ({ children }) => <li className="mb-1">{children}</li>,
-                    code({ node, inline, className, children, ...props }: {
-                        node?: unknown;
-                        inline?: boolean;
-                        className?: string;
-                        children?: React.ReactNode;
-                        [key: string]: unknown;
-                    }) {
+                    code({ inline, className, children, ...props }: { inline?: boolean; className?: string; children?: React.ReactNode }) {
                         const match = /language-(\w+)/.exec(className || "");
                         const codeText = String(children).replace(/\n$/, "");
 
