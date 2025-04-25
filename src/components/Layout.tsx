@@ -5,7 +5,7 @@ interface LayoutProps {
 }
 const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
-        <div className='relative w-full'>
+        <div className='relative w-full h-full'>
             <Navbar />
             <div className='relative '>
                 {children}

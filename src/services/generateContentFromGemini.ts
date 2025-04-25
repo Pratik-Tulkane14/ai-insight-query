@@ -1,38 +1,51 @@
+import axios from "axios";
 const SECRET_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const generateContentFromGemini = async (prompt: string) => {
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${SECRET_KEY}`;
+
+const generateContentFromGemini = async (
+  prompt: string | File
+): Promise<string> => {
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${SECRET_KEY}`;
 
   try {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              {
-                text: prompt,
-              },
-            ],
+    if (prompt instanceof File) {
+      const formData = new FormData();
+      formData.append("file", prompt);
+
+      const response = await axios.post(endpoint, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", 
+        },
+      });
+      return (
+        response.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+        "No response"
+      );
+    }
+    else {
+      const response = await axios.post(
+        endpoint,
+        {
+          contents: [
+            {
+              parts: [{ text: prompt }],
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json", 
           },
-        ],
-      }),
-    });
-
-    const data = await response.json();
-    const result = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    console.log(result, "result");
-    // setInputMessages((prev) => [
-    //   ...prev,
-    //   { gemini: data?.candidates?.[0]?.content?.parts?.[0]?.text, client: "" },
-    // ]);
-
-    return result || "No response from Gemini.";
+        }
+      );
+      return (
+        response.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+        "No response"
+      );
+    }
   } catch (error) {
     console.error("Gemini API Error:", error);
-    return "Error occurred while generating content.";
+    return "Error generating content";
   }
 };
+
 export default generateContentFromGemini;

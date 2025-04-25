@@ -18,7 +18,7 @@ const MarkdownUi: React.FC<MarkdownUiProps> = ({ text }) => {
     };
 
     return (
-        <div className="bg-[#404045] text-white p-4 mx-4 rounded-md leading-relaxed space-y-4 border-none ring-0">
+        <div className="bg-[#404045] w-full text-white p-4 mx-4 leading-relaxed space-y-4 border-none ring-0 rounded-tr-2xl rounded-bl-2xl rounded-br-2xl">
             <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
@@ -60,7 +60,7 @@ const MarkdownUi: React.FC<MarkdownUiProps> = ({ text }) => {
                             </code>
                         );
                     },
-                    pre: ({ children }) => <>{children}</>, // Using React fragment to avoid extra DOM element
+                    pre: ({ children }) => <>{children}</>,
                 }}
             >
                 {text}

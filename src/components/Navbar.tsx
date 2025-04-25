@@ -1,7 +1,7 @@
 import React from 'react'
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/clerk-react";
 import { dark } from "@clerk/themes";
-import logo from "/gemini.svg"
+import logo from "/chatLogo.png"
 const Navbar: React.FC = () => {
   return (
     <header className='fixed top-0 w-full h-20 z-10 flex justify-between items-center px-4 py-3 bg-[#121212] shadow-xl'>

@@ -1,46 +1,49 @@
+import { useEffect, useRef } from 'react';
 import MarkdownUi from './MarkdownUi';
-const data = `React is a **declarative, efficient, and flexible JavaScript library for building user interfaces (UIs).**  It's maintained by Facebook and a large community of individual developers and companies.
-
-Here's a breakdown of what that means:
-
-*   **JavaScript Library:** React is not a full-fledged framework like Angular or Vue.js. It focuses specifically on the view layer of your application – that is, what the user sees and interacts with.  You might need other libraries to handle routing, state management, or data fetching.
-
-*   **Declarative:**  With React, you describe *what* you want the UI to look like based on the current state of your data. You don't have to worry about *how* to manipulate the DOM (Document Object Model) directly to get there. React handles the updates efficiently. This makes your code easier to read, understand, and maintain.
-
-*   **Efficient:** React uses a **Virtual DOM** – a lightweight in-memory representation of the actual DOM.  When your data changes, React compares the Virtual DOM with the previous version and only updates the parts of the real DOM that have actually changed. This process, known as **"diffing,"** significantly improves performance, especially in complex UIs with frequent updates.
-
-*   **Flexible:** React is highly adaptable and can be used in a variety of projects, from single-page applications (SPAs) to mobile apps (using React Native) and even desktop applications.  You can integrate it with other JavaScript libraries and frameworks.
-
-*   **Component-Based:** React is built around the concept of **components**.  A component is a reusable, self-contained piece of UI, like a button, a form, or an entire page.  Components can be composed together to create complex UIs.  This promotes code reuse, modularity, and maintainability.
-
-**Key Concepts in React:**
-
-*   **Components:** The building blocks of React applications.  Components are JavaScript functions or classes that return a description of what should appear on the screen (JSX).
-*   **JSX (JavaScript XML):** A syntax extension to JavaScript that allows you to write HTML-like structures within your JavaScript code. React uses JSX to define the structure and content of your components. JSX is transpiled into regular JavaScript.
-*   **Props (Properties):** Data passed from a parent component to a child component. Props are read-only within the child component.
-*   **State:** Data that is managed within a component.  When the state of a component changes, React re-renders the component to reflect the new state.
-*   **Virtual DOM:** A lightweight in-memory representation of the real DOM. React uses the Virtual DOM to efficiently update the actual DOM.
-*   **Lifecycle Methods (for class components):**  Special methods that are called at different points in a component's lifecycle (e.g., when the component is first created, when it's updated, when it's removed from the DOM). These methods allow you to perform actions at specific times.  Functional components with hooks have largely replaced the need for lifecycle methods in many cases.
-*   **Hooks (for functional components):**  Functions that let you "hook into" React state and lifecycle features from functional components.  Common hooks include, etc. Hooks make it easier to manage state and side effects in functional components, and are generally considered best practice.
-
-**Benefits of Using React:**
-
-*   **Reusable Components:**  Build once, use many times, saving development time and effort.
-*   **Improved Performance:** The Virtual DOM makes updates efficient.
-*   **Declarative Style:** Makes code easier to understand and maintain.
-*   **Strong Community:**  A large and active community provides ample support and resources.
-*   **SEO Friendly:**  React applications can be rendered on the server, which can improve SEO. (Using frameworks like Next.js or Gatsby)
-*   **Cross-Platform Development (with React Native):**  Build mobile apps for iOS and Android using the same codebase.
-*   **Job Market Demand:** React is a highly sought-after skill in the web development industry.
-`;
-const ConversationSection = () => {
+import chatLogo from "/chatLogo.png";
+interface ConversationSectionProps {
+    data: { id?: string; user?: string|File; gemini?: string }[],
+    isLoading: boolean
+}
+const ConversationSection: React.FC<ConversationSectionProps> = ({ data, isLoading }) => {
+    const messageEndRef = useRef<HTMLDivElement>(null);
+    const handleScrollToBottom = () => {
+        messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+    useEffect(() => {
+        if (messageEndRef.current) {
+            handleScrollToBottom();
+        }
+    }, [data])
     return (
-        <div className='flex flex-col w-dvh mt-25 mb-20'>
-            <div className="flex items-end rounded-md">
-                <p className=' bg-[#404045] text-white p-4 mx-4 rounded-md'>What is ReactJs?</p></div>
-            <div className="flex items-start w-full my-20">
-                <MarkdownUi text={data} />
-            </div>
+        <div className='flex flex-col relative w-full px-2 md:w-[50%] my-28'>
+            {data.map((item, index) => {
+                return (
+                    <div key={index} >
+                        {item.user &&
+                            <div className="flex justify-end  w-full ">
+                                    {typeof item.user === 'string' && (
+                                        <p className=' bg-[#404045] text-white p-4 mx-4 rounded-tl-2xl rounded-bl-2xl rounded-br-2xl'>{item.user}</p>
+                                    )}
+                                </div>
+                        }
+                        {item.gemini &&
+                            <div className="flex justify-start items-center max-w-[80%] mb-10 mt-10">
+                                <div className="flex items-start">
+                                    <img src={chatLogo} className='h-10 w-10' />
+                                </div>
+                                <MarkdownUi text={item.gemini} />
+                            </div>
+                        }
+                    </div>
+                )
+            })}
+            {isLoading &&
+                <div className="flex justify-start max-w-[80%] mb-10 mt-10">
+                    <p>Just a second...</p>
+                </div>
+            }
+            <div ref={messageEndRef}></div>
         </div>
     )
 }
