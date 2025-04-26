@@ -24,7 +24,7 @@ const Home = () => {
     }, [conversations]);
     return (
         <>
-            {/* <div className="flex justify-center items-center text-white h-screen w-full border-2">
+            {/* <div className="flex justify-center items-center  text-white   border-2">
 
                 <p className=''>Hello, Pratik</p>
             </div> */}

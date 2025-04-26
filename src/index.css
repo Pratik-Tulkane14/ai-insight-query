@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  /* color-scheme: light dark; */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 body{
   position: relative;
+  /* background-color: #1B1C1D; */
+  background-color: #2f2828;
 }
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #ffffff;
   }
-}
+} */

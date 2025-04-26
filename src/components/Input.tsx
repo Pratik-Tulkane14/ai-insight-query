@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FaPlus, FaRegCircleStop } from 'react-icons/fa6';
 import { IoMdSend } from "react-icons/io";
 import generateContentFromGemini from '../services/generateContentFromGemini';
+import getDetails from '../services/getDetails';
 
 interface Conversation {
     user?: string | File,
@@ -25,10 +26,14 @@ const Input: React.FC<InputProps> = ({ setConversations, isLoading, setIsLoading
         setInput("");
         setIsLoading(true);
         setConversations((prev) => [...prev, { user: userInput }]);
-
+        const bodyData = {
+            prompt: userInput
+        }
         try {
-            const result = await generateContentFromGemini(userInput);
-            setConversations((prev: Conversation[]) => [...prev, { gemini: result }]);
+            // const result = await generateContentFromGemini(userInput);
+            const result = await getDetails(bodyData);
+
+            setConversations((prev: Conversation[]) => [...prev, { gemini: result.data.response }]);
         } catch (error) {
             console.error("Error generating content:", error);
             setConversations((prev) => [...prev, { gemini: "Sorry, something went wrong" }]);
@@ -55,8 +60,8 @@ const Input: React.FC<InputProps> = ({ setConversations, isLoading, setIsLoading
     }, [input]);
 
     return (
-        <div className="flex flex-col justify-center items-center z-50 fixed bottom-0 pb-3 w-full  min-h-[50px] max-h-auto bg-[#121212]">
-            <div className="w-[90vw] md:w-[50%] flex items-center rounded-2xl border-1">
+        <div className="flex flex-col justify-center items-center z-50 fixed bottom-0 pb-3 w-screen  min-h-[50px] max-h-auto bg-[#1B1C1D]">
+            <div className="w-[90vw] md:w-[50%] flex items-center rounded-2xl border-1 border-[#e3e3e3]">
                 <form className='w-full flex gap-2 items-center justify-center px-2 py-2' onSubmit={handleSubmit}>
                     <textarea
                         ref={textareaRef}

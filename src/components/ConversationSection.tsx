@@ -40,7 +40,7 @@ const ConversationSection: React.FC<ConversationSectionProps> = ({ data, isLoadi
             })}
             {isLoading &&
                 <div className="flex justify-start max-w-[80%] mb-10 mt-10">
-                    <p>Just a second...</p>
+                    <p className='text-white'>Just a second...</p>
                 </div>
             }
             <div ref={messageEndRef}></div>
